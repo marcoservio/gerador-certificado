@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input, input } from '@angular/core';
 
 @Component({
   selector: 'app-primary-botton',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './primary-botton.html',
   styleUrl: './primary-botton.css'
 })
 export class PrimaryBotton {
-
+  @Input() textoBotao: string = '';
+  @Input() disabled: boolean = false;
 }

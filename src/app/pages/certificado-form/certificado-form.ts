@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, viewChild } from '@angular/core';
 import { PrimaryBotton } from "../../components/primary-botton/primary-botton";
 import { SecundaryButton } from "../../components/secundary-button/secundary-button";
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule, NgForm, NgModel } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CertificadoInterface } from "../../interfaces/certificado-interface";
+import { CertificadoService } from '../../services/certificado.service';
+import { v4 as uuid } from 'uuid';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-certificado-form',
@@ -12,11 +15,16 @@ import { CertificadoInterface } from "../../interfaces/certificado-interface";
   styleUrl: './certificado-form.css'
 })
 export class CertificadoForm {
+  constructor(private certificadoService: CertificadoService, private route: Router) { }
+  @ViewChild('form') form!: NgForm;
+
   atividade: string = '';
 
   certificado: CertificadoInterface = {
+    id: '',
     atividades: [],
-    nome: ''
+    nome: '',
+    dataEmissao: ''
   }
 
   campoInvalido(control: NgModel) {
@@ -40,7 +48,34 @@ export class CertificadoForm {
 
   submit() {
     if (this.formValido()) {
-      console.log(this.certificado);
+      this.certificado.dataEmissao = this.dataAtual();
+      this.certificado.id = uuid();
+
+      this.certificadoService.adicionarCertificado(this.certificado);
+
+      this.route.navigate(['/certificados', this.certificado.id]);
+
+      // this.estadoInicialCertificado();
+      // this.form.resetForm();
     }
+  }
+
+  dataAtual() {
+    const dataAtual = new Date();
+    const dia = String(dataAtual.getDate()).padStart(2, '0');
+    const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+    const ano = dataAtual.getFullYear();
+
+    const dataFormatada = `${dia}/${mes}/${ano}`;
+    return dataFormatada;
+  }
+
+  estadoInicialCertificado() {
+    this.certificado = {
+      id: '',
+      atividades: [],
+      nome: '',
+      dataEmissao: ''
+    };
   }
 }

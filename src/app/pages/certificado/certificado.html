@@ -4,11 +4,11 @@
       <i class="ph ph-arrow-left"></i>
       <p class="m-0">Voltar</p>
     </div>
-    <app-secundary-button></app-secundary-button>
+    <app-secundary-button (click)="downloadCertificado()" phClass="ph ph-download-simple" textoBotao="Download"></app-secundary-button>
   </div>
-  <div class="certificado d-flex justify-content-center align-items-center">
-    <img src="certificate/certificate_ribbon.png" alt="Icone de medalha" class="icone-medalha"
-    />
+  @if (certificado) {
+  <div #certificadoContainer class="certificado d-flex justify-content-center align-items-center">
+    <img src="certificate/certificate_ribbon.png" alt="Icone de medalha" class="icone-medalha" />
     <div class="conteudo-certificado">
       <img src="certificate/certificate_signature.svg" alt="Icone de assinatura" class="icone-assinatura" />
       <div class="info-certificado d-flex flex-column align-itens-center">
@@ -16,21 +16,16 @@
           <h1>CERTIFICADO DE CONCLUSÃO</h1>
           <p>Esse certificado comprova que</p>
         </div>
-        <p class="nome-aluno">Marco Capanema</p>
-          <div>
-            <p class="lista-atividade-titulo">Concluiu com sucesso as seguintes atividades:</p>
-            <p class="lista-atividade">
-              Aprender sobre a sintaxe básica do C#. Instalar e configurar o
-              ambiente de desenvolvimento (Visual Studio, por exemplo). Entender os
-              tipos de dados primitivos (int, float, string, etc.). Declarar
-              variáveis e utilizar operadores básicos. Usar estruturas condicionais
-              (if-else, switch-case). Implementar loops (for, while, do-while) para
-              iteração. Criar e chamar métodos com e sem parâmetros. Retornar
-              valores de métodos e entender escopo de variáveis
-            </p>
+        <p class="nome-aluno">{{certificado.nome}}</p>
+        <div>
+          <p class="lista-atividade-titulo">Concluiu com sucesso as seguintes atividades:</p>
+          <p class="lista-atividade">
+           {{certificado.atividades.join(', ')}}
+          </p>
         </div>
       </div>
-      <p class="data-emissao">Emitido em 23/07/2025</p>
+      <p class="data-emissao">Emitido em {{certificado.dataEmissao}}</p>
     </div>
   </div>
+  }
 </div>
